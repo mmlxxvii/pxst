@@ -23,5 +23,4 @@ api.use("/api/posts", postRoutes)
 api.use("/api/account", accountRoutes)
 api.use("/*", notFound)
 
-
 api.listen(PORT, () => console.log(`Running at ::${PORT}`))
