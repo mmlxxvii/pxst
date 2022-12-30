@@ -1,27 +1,16 @@
 import { Request, Response, NextFunction } from "express"
 import { findByUsername } from "../services/findUser.service"
 
-import { User } from "../models/user.model"
-import {
-    signToken,
-    hashPassword,
-    generateId,
-    generateRecoveryKey
-} from "../helpers/verify-auth"
+import { IUser, User } from "../models/user.model"
+import { signToken, hashPassword, generateRecoveryKey } from "../helpers/authAndStuffs"
 
 export const accountController = {
     async login(req: Request, res: Response) {
         const { username, password } = req.body
-
-        if (!username || !password) {
-            return res.status(403).json(null)
-        }
-
-        const user: unknown = await findByUsername(username)
+        const user: IUser = await findByUsername(username)
         const hashedPassword: string = await hashPassword(password)
 
-        // @ts-ignore
-        if (user?.password !== hashedPassword) {
+        if (!user || user?.password !== hashedPassword) {
             return res.status(403).json({ "error": "wrong credentials" })
         }
 
@@ -32,26 +21,17 @@ export const accountController = {
 
     async recovery(req: Request, res: Response) {
         const { username, recoveryKey } = req.body
+        const user = await findByUsername(username) satisfies IUser
 
-        if (!username || !recoveryKey) {
-            return res.json(null)
-        }
-
-        const user: unknown = await findByUsername(username)
-
-        // @ts-ignore
         if (!user || user?.recoveryKey !== recoveryKey) {
-            return res.json(null)
+            return res.json({ "error": "credentials does not match" })
         }
 
         const newRecoveryKey: string = generateRecoveryKey()
         const newPassword: string = generateRecoveryKey()
 
-        // @ts-ignore
         user.recoveryKey = newRecoveryKey
-        // @ts-ignore
         user.password = hashPassword(newPassword)
-        // @ts-ignore
         user.save()
 
         res.json({ newRecoveryKey, newPassword })
@@ -59,28 +39,25 @@ export const accountController = {
 
     async register(req: Request, res: Response) {
         const { username, password } = req.body
-
-        if (!username || !password) {
-            return res.json(null)
-        }
-
-        const user: unknown = await findByUsername(username)
+        const user: IUser = await findByUsername(username)
 
         if (user) {
             return res.json({ "error": "username already taken" })
         }
 
-        (await User.create({
-            id: generateId(),
-            posts: [],
-            favPosts: [],
+        const _id = await User.countDocuments()
+        const newUser = await User.create({
+            id: _id + 1,
             username: username,
             password: hashPassword(password),
             recoveryKey: generateRecoveryKey(),
             isPremium: false,
             avatarUrl: "null",
-        })).save().catch(err => res.json({ "error": err.message }))
+            posts: [],
+            favPosts: [],
+        })
 
+        newUser.save()
         const token: string = signToken(username)
 
         res.json(token)

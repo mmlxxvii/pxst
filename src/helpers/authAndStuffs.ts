@@ -1,6 +1,6 @@
 import "dotenv/config"
-import { Request, Response, NextFunction } from "express"
-import { createHmac, randomBytes, randomInt } from "crypto"
+import { randomBytes } from "crypto"
+import { createHmac } from "crypto"
 import jwt from "jsonwebtoken"
 
 const JWT_SECRET: string = process.env.JWT_TOKEN || ""
@@ -13,12 +13,15 @@ const hashPassword = (password: string): string => {
     return createHmac("sha256", JWT_SECRET).update(password).digest("hex")
 }
 
-const generateId = (): number => {
-    return randomInt(8)
-}
-
 const generateRecoveryKey = (): string => {
-    return randomBytes(16).toString()
+    const random: string = randomBytes(5).toString("hex").toUpperCase()
+    let mask: string = "xxx-xxxx-xxx"
+
+    for (let i = 0, l = random.length; i < l; i++) {
+        mask = mask.replace("x", random[i])
+    }
+
+    return mask
 }
 
-export { signToken, hashPassword, generateId, generateRecoveryKey }
+export { signToken, hashPassword, generateRecoveryKey }

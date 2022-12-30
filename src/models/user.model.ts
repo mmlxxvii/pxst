@@ -12,7 +12,7 @@ interface IUser {
 }
 
 const userSchema = new Schema<IUser>({
-    id: { type: String, required: true, unique: true },
+    id: { type: String, unique: true, auto: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     recoveryKey: { type: String, required: true },

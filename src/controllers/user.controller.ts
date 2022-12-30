@@ -1,64 +1,55 @@
-import { Request, Response, NextFunction } from "express"
-import { findByUsername, findById } from "../services/findUser.service"
-import { IUser, User } from "../models/user.model"
+import { Request, Response } from "express"
+import { User } from "../models/user.model"
 
 export const userController = {
-    async get(req: Request, res: Response) {
-        const { username } = req.body
-
-        if (!username) {
-            return res.json(null)
-        }
-
-        const user = await findByUsername(username) satisfies IUser
-
-        if (!user) {
-            return res.json(null)
-        }
-
-        res.json({
-            username: user.username,
-            isPremium: user.isPremium,
-            favPosts: user.favPosts,
-            posts: user.posts,
-        })
-    },
-
     async getUserByUsername(req: Request, res: Response) {
         const { username } = req.params
+        const query: object = { username: username }
 
-        if (!username) {
-            return res.json(null)
+        try {
+            const user = await User.findOne(query)
+
+            if (!user)
+                return res.json(user)
+
+            res.json({
+                username: user.username,
+                isPremium: user.isPremium,
+                favPosts: user.favPosts,
+                posts: user.posts,
+            })
+
+        } catch (err) {
+            // @ts-ignore
+            console.log(err.message)
+            res.json({ "error": "unhandled exception" })
+
         }
-
-        const user = await findByUsername(username) satisfies IUser
-
-        if (!user) {
-            return res.json(null)
-        }
-
-        res.json({
-            username: user.username,
-            isPremium: user.isPremium,
-            favPosts: user.favPosts,
-            posts: user.posts,
-        })
     },
 
     async getUserById(req: Request, res: Response) {
         const { userId } = req.params
+        const query: object = { id: userId }
 
-        if (!userId) {
-            return res.json(null)
+        try {
+            const user = await User.findOne(query)
+
+            if (!user)
+                return res.json(user)
+
+            res.json({
+                id: user?.id,
+                username: user?.username,
+                isPremium: user?.isPremium,
+                favPosts: user?.favPosts,
+                posts: user?.posts,
+            })
+
+        } catch (err) {
+            // @ts-ignore
+            console.log(err.message)
+            res.json({ "error": "unhandled exception" })
+
         }
-
-        const user = await User.findOne({ id: `${userId}` })
-
-        res.json({
-            username: user?.username,
-            isPremium: user?.isPremium,
-            favPosts: user?.favPosts,
-            posts: user?.posts,
-        })
-    }
+    },
 }

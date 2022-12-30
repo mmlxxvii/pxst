@@ -5,9 +5,7 @@ import cors from "cors"
 import { userRoutes } from "./routes/user.route"
 import { postRoutes } from "./routes/post.route"
 import { accountRoutes } from "./routes/account.route"
-
 import { notFound } from "./middlewares/404.middleware"
-
 import { connectToDatabase } from "./services/connectToDatabase.service"
 
 const api: Express = express()
