@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose"
+import { Schema, model } from "mongoose"
 
 interface IUser {
     id: string,
@@ -22,6 +22,6 @@ const userSchema = new Schema<IUser>({
     isPremium: { type: Boolean, required: true },
 })
 
-const User = mongoose.model<IUser>("User", userSchema)
+const User = model<IUser>("User", userSchema)
 
 export { IUser, User }

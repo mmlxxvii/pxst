@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import { User } from "../models/user.model"
 import { Post } from "../models/post.model"
-import { findByUsername } from "../services/findUser.service"
 
 export const postController = {
     async getPostById(req: Request, res: Response) {
@@ -9,7 +8,7 @@ export const postController = {
         const posts = await Post.findOne({ id: postId })
 
         if (!posts) {
-            return res.json(null)
+            return res.json({})
         }
 
         res.json(posts)
@@ -21,11 +20,12 @@ export const postController = {
         let posts: unknown[] = []
 
         if (!user || user?.posts.length === 0) {
-            return res.json(null)
+            return res.json({})
         }
 
         for (let i: number = 0, l: number = user.posts.length; i < l; i++) {
             const post = await Post.findOne({ id: user.posts[i] })
+
             posts.push({
                 id: post?.id,
                 content: post?.content,
@@ -38,7 +38,8 @@ export const postController = {
         return res.json(posts)
     },
 
-    async getAuthorPost(req: Request, res: Response) {
+    // idk how to name it :/
+    async getEspecificPostByAuthorAndPostId(req: Request, res: Response) {
         const { author, postId } = req.params
         const post = await Post.findOne({ id: postId })
 
@@ -52,14 +53,14 @@ export const postController = {
             })
         }
 
-        return res.json(null)
+        return res.json({})
     },
 
     async createPost(req: Request, res: Response) {
         const { username, post } = req.body
 
         try {
-            const user = await findByUsername(username)
+            const user = await User.findOne({ username: username })
             const _id = await Post.countDocuments()
             const newPost = await Post.create({
                 id: _id + 1,
@@ -70,17 +71,13 @@ export const postController = {
             })
 
             newPost.save()
-
-            user.posts.push(newPost.id)
-            user.save()
+            user?.posts.push(newPost.id)
+            user?.save()
 
             res.json({ "success": "Post created" })
 
         } catch (err) {
-            // @ts-ignore
-            console.log(err.message)
             res.json({ "error": "unhandled exception" })
-
         }
     }
 }

@@ -1,15 +1,12 @@
 import { User } from "../models/user.model"
 
-//TO DO: Re-do it later
+type Option = "id" | "username"
 
-export const findByUsername = async (username: string): Promise<any> => {
-    const user = await User.findOne({ username: username })
+const findUser = async (user: string, option: Option): Promise<any> => {
+    const query: object = option === "id" ? { id: user } : { username: user }
+    const getUser = await User.findOne(query)
 
-    return user
+    return getUser
 }
 
-export const findById = async (userId: string): Promise<any> => {
-    const user: unknown = await User.findOne({ id: userId })
-
-    return user
-}
+export { findUser }

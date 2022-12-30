@@ -13,8 +13,6 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 
     jwt.verify(token, JWT_SECRET, (err: unknown, user: unknown) => {
         if (err) {
-            // @ts-ignore
-            console.log(err.message)
             return res.status(403).json({ "error": "error" })
         }
 

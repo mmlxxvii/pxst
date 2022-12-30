@@ -9,6 +9,6 @@ const postRoutes: Router = Router()
 postRoutes.post("/", checkAuth, checkParams(["username", "post"], "body"), postController.createPost)
 postRoutes.get("/:postId", checkParams(["postId"], "param"), postController.getPostById)
 postRoutes.get("/author/:author", checkParams(["author"], "param"), postController.getPostsByAuthor)
-postRoutes.get("/author/:author/:postId", checkParams(["author", "postId"], "param"), postController.getAuthorPost)
+postRoutes.get("/author/:author/:postId", checkParams(["author", "postId"], "param"), postController.getEspecificPostByAuthorAndPostId)
 
 export { postRoutes }

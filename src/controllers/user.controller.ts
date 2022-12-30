@@ -9,8 +9,9 @@ export const userController = {
         try {
             const user = await User.findOne(query)
 
-            if (!user)
+            if (!user) {
                 return res.json(user)
+            }
 
             res.json({
                 username: user.username,
@@ -20,10 +21,7 @@ export const userController = {
             })
 
         } catch (err) {
-            // @ts-ignore
-            console.log(err.message)
             res.json({ "error": "unhandled exception" })
-
         }
     },
 
@@ -34,8 +32,9 @@ export const userController = {
         try {
             const user = await User.findOne(query)
 
-            if (!user)
+            if (!user) {
                 return res.json(user)
+            }
 
             res.json({
                 id: user?.id,
@@ -46,10 +45,7 @@ export const userController = {
             })
 
         } catch (err) {
-            // @ts-ignore
-            console.log(err.message)
             res.json({ "error": "unhandled exception" })
-
         }
-    },
+    }
 }

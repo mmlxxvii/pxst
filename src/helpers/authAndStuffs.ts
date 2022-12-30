@@ -1,6 +1,5 @@
 import "dotenv/config"
-import { randomBytes } from "crypto"
-import { createHmac } from "crypto"
+import { randomBytes, createHmac } from "crypto"
 import jwt from "jsonwebtoken"
 
 const JWT_SECRET: string = process.env.JWT_TOKEN || ""
