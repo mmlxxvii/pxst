@@ -3,6 +3,22 @@ import { User } from "../models/user.model"
 import { Post } from "../models/post.model"
 
 export const postController = {
+    async getAll(req: Request, res: Response) {
+        const posts = await Post.find({})
+        let allPosts: Array<unknown> = []
+
+        for (let i: number = 0, l: number = posts.length; i < l; i++) {
+            allPosts.push({
+                id: posts[i]?.id,
+                author: posts[i]?.author,
+                favNumber: posts[i]?.favNumber,
+                time: posts[i]?.time
+            })
+        }
+
+        res.json(allPosts)
+    },
+
     async getPostById(req: Request, res: Response) {
         const { postId } = req.params
         const posts = await Post.findOne({ id: postId })

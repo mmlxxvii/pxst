@@ -5,6 +5,7 @@ import { checkParams } from "../middlewares/checkParams.middleware"
 
 const userRoutes: Router = Router()
 
+userRoutes.get("/", userController.getAll)
 userRoutes.get("/:userId", checkParams(["userId"], "param"), userController.getUserById)
 userRoutes.get("/username/:username", checkParams(["username"], "body"), userController.getUserByUsername)
 

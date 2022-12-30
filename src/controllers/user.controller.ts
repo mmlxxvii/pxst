@@ -47,5 +47,23 @@ export const userController = {
         } catch (err) {
             res.json({ "error": "unhandled exception" })
         }
+    },
+
+    async getAll(req: Request, res: Response) {
+        const users = await User.find({})
+        let allUsers: Array<unknown> = []
+
+        for (let i: number = 0, l: number = users.length; i < l; i++) {
+            allUsers.push({
+                id: users[i]?.id,
+                username: users[i]?.username,
+                avatarUrl: users[i]?.avatarUrl,
+                isPremium: users[i]?.isPremium,
+                favPosts: users[i]?.favPosts,
+                posts: users[i]?.posts
+            })
+        }
+
+        res.json(allUsers)
     }
 }
