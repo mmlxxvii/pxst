@@ -1,8 +1,8 @@
 import { Router } from "express"
 
 import { postController } from "../controllers/post.controller"
-import { checkAuth } from "../middlewares/checkAuth.middleware"
-import { checkParams } from "../middlewares/checkParams.middleware"
+import { checkAuth } from "../middlewares/check-auth.middleware"
+import { checkParams } from "../middlewares/check-params.middleware"
 
 const postRoutes: Router = Router()
 

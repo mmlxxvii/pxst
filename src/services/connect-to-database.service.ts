@@ -1,5 +1,5 @@
-import mongoose from "mongoose"
 import "dotenv/config"
+import mongoose from "mongoose"
 
 export const connectToDatabase = () => {
     const DATABASE_URI: string = process.env.DATABASE_URI || ""

@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import { userController } from "../controllers/user.controller"
-import { checkParams } from "../middlewares/checkParams.middleware"
+import { checkParams } from "../middlewares/check-params.middleware"
 
 const userRoutes: Router = Router()
 

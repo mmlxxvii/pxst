@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import { accountController } from "../controllers/account.controller"
-import { checkParams } from "../middlewares/checkParams.middleware"
+import { checkParams } from "../middlewares/check-params.middleware"
 
 const accountRoutes: Router = Router()
 

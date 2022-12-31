@@ -6,7 +6,7 @@ import { userRoutes } from "./routes/user.route"
 import { postRoutes } from "./routes/post.route"
 import { accountRoutes } from "./routes/account.route"
 import { notFound } from "./middlewares/404.middleware"
-import { connectToDatabase } from "./services/connectToDatabase.service"
+import { connectToDatabase } from "./services/connect-to-database.service"
 
 const api: Express = express()
 const PORT: unknown = process.env.PORT || 1337

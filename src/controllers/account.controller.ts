@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 
 import { User } from "../models/user.model"
-import { signToken, hashPassword, generateRecoveryKey } from "../helpers/authAndStuffs"
+import { signToken, hashPassword, generateRecoveryKey } from "../helpers/auth-and-stuffs"
 
 export const accountController = {
     async login(req: Request, res: Response) {
