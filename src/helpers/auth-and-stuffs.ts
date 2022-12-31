@@ -1,11 +1,11 @@
 import "dotenv/config"
-import { randomBytes, createHmac } from "crypto"
 import jwt from "jsonwebtoken"
+import { randomBytes, createHmac } from "crypto"
 
 const JWT_SECRET: string = process.env.JWT_TOKEN || ""
 
-const signToken = (password: string): string => {
-    return jwt.sign(password, JWT_SECRET)
+const signToken = (username: string): string => {
+    return jwt.sign(username, JWT_SECRET)
 }
 
 const hashPassword = (password: string): string => {
