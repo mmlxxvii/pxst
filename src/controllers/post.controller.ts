@@ -27,7 +27,13 @@ export const postController = {
             return res.json({})
         }
 
-        res.json(posts)
+        res.json({
+            id: posts?.id,
+            content: posts?.content,
+            author: posts?.author,
+            favNumber: posts?.favNumber,
+            time: posts?.time
+        })
     },
 
     async getPostsByAuthor(req: Request, res: Response) {

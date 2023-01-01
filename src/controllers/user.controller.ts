@@ -65,5 +65,22 @@ export const userController = {
         }
 
         res.json(allUsers)
+    },
+
+    async me(req: Request, res: Response) {
+        const { username } = req.body
+        const user = await User.findOne({ username: username })
+
+        if (!user) {
+            return res.json({})
+        }
+
+        res.json({
+            id: user?.id,
+            username: user?.username,
+            isPremium: user?.isPremium,
+            favPosts: user?.favPosts,
+            posts: user?.posts,
+        })
     }
 }
